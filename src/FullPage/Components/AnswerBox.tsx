@@ -44,7 +44,7 @@ export const AnswerBox = ({ answer }: { answer: AnswerType }) => {
           <TableBody>
             <TableRow key="Macros1">
               <TableCell>Kcal</TableCell>{" "}
-              <TableCell>{String(answer.macros.kcal)}g</TableCell>{" "}
+              <TableCell>{String(answer.macros.kcal)}</TableCell>{" "}
               <TableCell>Fats</TableCell>
               <TableCell>{String(answer.macros.fats)}g</TableCell>{" "}
             </TableRow>

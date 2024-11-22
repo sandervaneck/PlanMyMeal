@@ -1,18 +1,51 @@
-# Getting Started with Create React App
+React OpenAI Recipe Web App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+This is a React-based web application built with Node.js (v21.7.3), TypeScript, and an integration with the OpenAI API. The app allows users to interact with OpenAI to provide descriptions for recipes or analyze an image URL.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+    •	Recipe Descriptions: Provide textual input for a recipe, and get descriptive information from OpenAI.
+    •	Image URL Analysis: Submit an image URL to get AI-generated insights.
+    •	Dynamic tab interface for user input options.
+    •	Results displayed in a dedicated answer box.
 
-Runs the app in the development mode.\
+### Installation and Setup
+
+Follow these steps to set up and run the application:
+
+1. Clone the repository:
+
+```
+git clone <repository-url>
+cd <repository-folder>
+```
+
+2. Install dependencies:
+
+```
+npm install
+```
+
+3. Configure environment variables:
+   • Rename the file .env.local.example to .env.local.
+   • Add your OpenAI API keys in the .env.local file:
+
+```
+REACT_APP_OPENAI_API_KEY=your-api-key
+REACT_APP_OPENAI_ORGANIZATION=your-organization-id
+```
+
+4. Start the development server:
+
+```
+npm start
+```
+
+This runs the app in the development mode.\
+
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
 ### `npm test`
 
@@ -29,18 +62,34 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## File Structure and Key Components
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. Tabs Interface
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   • File: src/FullPage/index.tsx
+   • This file contains the tab-based navigation that allows users to choose between:
+   • Providing a recipe description.
+   • Submitting an image URL for analysis.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+2. OpenAI API Calls
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+   • File: [OpenAI Calls](src/FullPage/openai/calls.tsx)
+   • Handles the interaction with OpenAI’s API based on the user’s input.
 
-## Learn More
+3. Result Display
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   • File: [AnswerBox](src/FullPage/Components/AnswerBox.tsx)
+   • Displays the AI-generated response from OpenAI in an intuitive and styled component.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Prerequisites
+
+    •	Node.js: Ensure you have Node.js (v21.7.3 or higher) installed.
+    •	API Keys: Obtain your OpenAI API keys to enable functionality.
+
+## How to Use
+
+    1.	Select a tab:
+    •	Recipe Input: Enter descriptive details about your recipe.
+    •	Image URL: Paste a valid image URL for AI analysis.
+    2.	Submit your input and wait for the AI response.
+    3.	View the results in the Answer Box.
