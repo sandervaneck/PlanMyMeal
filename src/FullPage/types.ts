@@ -1,14 +1,18 @@
+export type Macros = {
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+  salt: number;
+};
+
 export type AnswerType = {
   name: string;
   ingredients: { name: string; quantity: number; unit: string }[];
-  macros: {
-    kcal: number;
-    protein: number;
-    carbs: number;
-    fats: number;
-    salt: number;
-  };
+  macros: Macros;
   instructions: string;
+  category: string;
+  time: string;
 };
 
 export type MinMax = {
@@ -23,14 +27,15 @@ export type MacroForm = {
   salt: MinMax;
 };
 
-export type GPTForm = {
+export type ImageForm = {
+  urls: string[];
+  files: string[];
+};
+
+export type RequestFormType = {
+  imageUrls: string[];
   ingredients: string;
   macros: MacroForm;
   maxTime: string;
   tags: string;
-};
-
-export type ImageForm = {
-  urls: string[];
-  files: string[];
 };

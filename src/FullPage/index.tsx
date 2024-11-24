@@ -1,76 +1,32 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { AnswerType, GPTForm, ImageForm, MacroForm } from "./types";
-import { emptyGptForm, emptyImageForm } from "./emptyForms";
-import { getPrompt, getPromptImage } from "./openai/functions";
-import { InputForms } from "./Components/Forms";
-import { AnswerBox } from "./Components/AnswerBox";
-import { MacroForms } from "./Components/MacroForm";
-import { IconLabelTabs } from "./Components/Tabs";
-import { callGpt, callGptForImages } from "./openai/calls";
-import { ImageInputSection } from "./ImageInput";
+import { AnswerType, RequestFormType } from "./types";
+import { emptyInputForm } from "./emptyForms";
+import { getPrompt } from "./openai/functions";
+import { callGpt } from "./openai/calls";
+import RecipeCardForm from "../RecipeForm";
+import { RequestForm } from "../RequestForm";
+import { useAuth0 } from "@auth0/auth0-react";
+import LoginButton from "../Components/LoginButton";
+import { RecipeTable } from "../RecipeTable";
 
-const returnForTab = (
-  value: number,
-  textForm: GPTForm,
-  setTextForm: (f: GPTForm) => void,
-  setImageForm: (f: ImageForm) => void,
-  imageForm: ImageForm
-) => {
-  switch (value) {
-    case 0:
-      return (
-        <Stack direction={"column"}>
-          <Typography variant="h5" color="white">
-            The recipe should satisfy:
-          </Typography>
-          <InputForms form={textForm} setForm={setTextForm} />
-          <MacroForms
-            macros={textForm.macros}
-            setForm={(f: MacroForm) => setTextForm({ ...textForm, macros: f })}
-          />
-        </Stack>
-      );
-    case 1:
-      return (
-        <Stack direction={"column"}>
-          <ImageInputSection form={imageForm} setForm={setImageForm} />
-        </Stack>
-      );
-    default:
-      return null; // Optional: Handle cases where the value is not 0 or 1
-  }
-};
+export const FullPage = ({ value }: { value: number }) => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
-export const FullPage = () => {
-  const [value, setValue] = useState(0);
-  const [form, setForm] = useState(emptyGptForm);
-  const [form2, setForm2] = useState(emptyImageForm);
-  const [isLoading, setIsLoading] = useState(false);
+  const [form, setForm] = useState(emptyInputForm);
+  const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState<AnswerType | null>(null);
 
-  const getMyMeal = (form: GPTForm) => {
+  const getMyMeal = (form: RequestFormType) => {
     const prompt = getPrompt(form);
     callGpt(
       prompt,
       (a: any) => setAnswer(a),
-      (b: boolean) => setIsLoading(b)
+      (b: boolean) => setLoading(b)
     );
   };
-  const getMyMealForImages = (form: ImageForm) => {
-    callGptForImages(
-      getPromptImage(form),
-      (a: any) => setAnswer(a),
-      (b: boolean) => setIsLoading(b)
-    );
-  };
+
   return (
     <Grid
       container
@@ -99,13 +55,11 @@ export const FullPage = () => {
           gap: 4,
         }}
       >
-        <IconLabelTabs value={value} setValue={setValue} />
-        {returnForTab(value, form, setForm, setForm2, form2)}
+        {!user && <LoginButton />}
+        <RequestForm form={form} setForm={setForm} />
         <Button
           variant="contained"
-          onClick={() => {
-            value === 0 ? getMyMeal(form) : getMyMealForImages(form2);
-          }}
+          onClick={() => getMyMeal(form)}
           sx={{ width: { xs: "100%", sm: "fit-content" } }}
         >
           Get My Meal
@@ -143,8 +97,15 @@ export const FullPage = () => {
               flexGrow: 1,
             }}
           >
-            {isLoading && <CircularProgress />}
-            {answer && <AnswerBox answer={answer} />}
+            {loading && <CircularProgress />}
+            {answer && value === 0 && (
+              <RecipeCardForm
+                answer={answer}
+                urls={form.imageUrls}
+                setAnswer={setAnswer}
+              />
+            )}
+            {value == 1 && <RecipeTable />}
           </Box>
         </Box>
       </Grid>

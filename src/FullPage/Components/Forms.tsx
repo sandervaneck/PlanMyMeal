@@ -1,9 +1,9 @@
 import { FormField } from "../../Components/FormField";
-import { GPTForm } from "../types";
+import { RequestFormType } from "../types";
 
 interface InputFormProps {
-  form: GPTForm;
-  setForm: (value: GPTForm) => void;
+  form: RequestFormType;
+  setForm: (value: RequestFormType) => void;
 }
 
 export const InputForms: React.FC<InputFormProps> = (props) => {

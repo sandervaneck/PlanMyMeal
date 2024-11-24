@@ -1,8 +1,13 @@
-import { GPTForm, ImageForm } from "../types";
+import { ImageForm, RequestFormType } from "../types";
 
-export const getPrompt = (form: GPTForm): string => {
-  const prompt = `Provide me with a dish name, recipe instructions, nutritional info, ingredient list of a meal that satisfies the following conditions:
-  Use at least the following ingredients: ${form.ingredients}, cooking time less than ${form.maxTime} minutes, diets/considerations: ${form.tags} and within the following ranges of nutritional info:
+export const getPrompt = (form: RequestFormType): string => {
+  const prompt = `Provide me with a dish name, recipe instructions, nutritional info, ingredient list, cooking time and category of a meal that satisfies the following conditions:
+  ${displayImages(form.imageUrls)}
+  Use at least the following ingredients: ${
+    form.ingredients
+  }, cooking time less than ${form.maxTime} minutes, diets/considerations: ${
+    form.tags
+  } and within the following ranges of nutritional info:
   between: ${form.macros.kcal.min} and ${form.macros.kcal.max} kcal, 
   between: ${form.macros.protein.min} and ${form.macros.protein.max} proteins, 
   between: ${form.macros.carbs.min} and ${form.macros.carbs.max} carbs, 
@@ -17,3 +22,8 @@ export const getPromptImage = (form: ImageForm): string => {
   `;
   return prompt;
 };
+
+const displayImages = (urls: string[]) =>
+  urls.length > 0
+    ? "It should be the dish you can see in these images: " + urls + ". "
+    : ". ";
