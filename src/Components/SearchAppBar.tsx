@@ -7,6 +7,9 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, Container } from "@mui/material";
+import { Account } from "../graphql/schema";
+import { LoginButton, LoginDialog } from "./LoginButton";
+import { useState } from "react";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -53,10 +56,16 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export const SearchAppBar = ({
   value,
   setValue,
+  user,
+  setUser,
 }: {
+  setUser: (a: Account) => void;
+  user: Account | undefined;
   value: number;
   setValue: (n: number) => void;
 }) => {
+  const [openDialog, setopenDialog] = useState(false);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -70,6 +79,7 @@ export const SearchAppBar = ({
             >
               SwipingChef
             </Typography>
+
             <Button
               onClick={() => setValue(0)}
               variant={value === 0 ? "contained" : "outlined"}
@@ -94,6 +104,21 @@ export const SearchAppBar = ({
                 My Recipes
               </Typography>
             </Button>
+            {user === undefined && (
+              <>
+                <LoginButton
+                  user={user}
+                  setUser={setUser}
+                  open={openDialog}
+                  setOpen={setopenDialog}
+                />
+                <LoginDialog
+                  open={openDialog}
+                  setOpen={setopenDialog}
+                  setUser={setUser}
+                />
+              </>
+            )}
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />

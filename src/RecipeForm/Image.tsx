@@ -26,7 +26,7 @@ export const ImageForRecipe = ({ urls }: { urls: string[] }) => {
           src={url}
           sx={{
             width: "100%",
-            height: "100%",
+            maxHeight: "200px", // Set maximum height for the images
             objectFit: "cover",
             borderRadius: "4px",
           }}

@@ -6,6 +6,7 @@ import {
   MinMax,
   RequestFormType,
 } from "./types";
+import { AccountInput, Contract, Lang } from "../graphql/schema";
 
 export const emptyMinMax: MinMax = {
   min: "",
@@ -161,3 +162,12 @@ export const recipes: AnswerType[] = [
     },
   },
 ];
+
+export const emptyAccountInput: AccountInput = {
+  email: "",
+  password: "",
+  diets: [""],
+  username: "",
+  contract: Contract.FREE,
+  language: Lang.ENGLISH,
+};

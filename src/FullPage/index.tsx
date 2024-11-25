@@ -5,15 +5,18 @@ import { AnswerType, RequestFormType } from "./types";
 import { emptyInputForm } from "./emptyForms";
 import { getPrompt } from "./openai/functions";
 import { callGpt } from "./openai/calls";
-import RecipeCardForm from "../RecipeForm";
+import { RecipeCardForm2 } from "../RecipeForm";
 import { RequestForm } from "../RequestForm";
-import { useAuth0 } from "@auth0/auth0-react";
-import LoginButton from "../Components/LoginButton";
 import { RecipeTable } from "../RecipeTable";
+import { Account } from "../graphql/schema";
 
-export const FullPage = ({ value }: { value: number }) => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
-
+export const FullPage = ({
+  value,
+  user,
+}: {
+  value: number;
+  user: Account | undefined;
+}) => {
   const [form, setForm] = useState(emptyInputForm);
   const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState<AnswerType | null>(null);
@@ -55,7 +58,6 @@ export const FullPage = ({ value }: { value: number }) => {
           gap: 4,
         }}
       >
-        {!user && <LoginButton />}
         <RequestForm form={form} setForm={setForm} />
         <Button
           variant="contained"
@@ -99,7 +101,7 @@ export const FullPage = ({ value }: { value: number }) => {
           >
             {loading && <CircularProgress />}
             {answer && value === 0 && (
-              <RecipeCardForm
+              <RecipeCardForm2
                 answer={answer}
                 urls={form.imageUrls}
                 setAnswer={setAnswer}

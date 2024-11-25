@@ -33,6 +33,15 @@ export const FormField: React.FC<FormFieldProps> = (props) => {
           (required && value === String(0) && "Fill in")
         }
         placeholder={placeholder}
+        type={
+          label === "Password"
+            ? "password"
+            : label === "Email"
+            ? "email"
+            : label === "Phone Number"
+            ? "tel"
+            : "text"
+        }
         multiline={multiline}
         sx={{ height: 0.5 }}
         size="small"
