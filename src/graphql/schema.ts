@@ -57,6 +57,10 @@ export type RankedAccountInfo = {
   account: AccountInfo;
 };
 
+export type LoginResult = {
+  login: Account;
+};
+
 export type Account = {
   __typename: "Account";
   password: string;

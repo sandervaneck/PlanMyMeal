@@ -107,7 +107,12 @@ export const FullPage = ({
                 setAnswer={setAnswer}
               />
             )}
-            {value == 1 && <RecipeTable />}
+            {value == 1 &&
+              (user ? (
+                <RecipeTable userId={user.id} />
+              ) : (
+                <>Log in to see your recipes</>
+              ))}
           </Box>
         </Box>
       </Grid>

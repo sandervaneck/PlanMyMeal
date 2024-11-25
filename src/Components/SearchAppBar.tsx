@@ -10,6 +10,7 @@ import { Button, Container } from "@mui/material";
 import { Account } from "../graphql/schema";
 import { LoginButton, LoginDialog } from "./LoginButton";
 import { useState } from "react";
+import { LogoutButton } from "./LogoutButton";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -65,7 +66,7 @@ export const SearchAppBar = ({
   setValue: (n: number) => void;
 }) => {
   const [openDialog, setopenDialog] = useState(false);
-
+  console.log(user);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -104,7 +105,7 @@ export const SearchAppBar = ({
                 My Recipes
               </Typography>
             </Button>
-            {user === undefined && (
+            {user === undefined ? (
               <>
                 <LoginButton
                   user={user}
@@ -117,6 +118,10 @@ export const SearchAppBar = ({
                   setOpen={setopenDialog}
                   setUser={setUser}
                 />
+              </>
+            ) : (
+              <>
+                <LogoutButton />
               </>
             )}
             <Search>

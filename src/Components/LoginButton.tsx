@@ -3,6 +3,7 @@ import { Account, AccountInput } from "../graphql/schema";
 import { useState } from "react";
 import { FormField } from "./FormField";
 import { emptyAccountInput } from "../FullPage/emptyForms";
+import { useLoginQuery } from "../Accountapi/api";
 
 interface LoginButtonProps {
   open: boolean;
@@ -40,7 +41,7 @@ interface SignUpFieldProps {
 }
 
 export const LoginButton: React.FC<LoginButtonProps> = (props) => {
-  const { user, setUser, open, setOpen } = props;
+  const { setOpen } = props;
   return (
     <Button
       onClick={() => {
@@ -81,7 +82,14 @@ export const LoginDialog: React.FC<DialogProps> = (props) => {
       <Button onClick={() => setOpen(false)}>Close</Button>
       <LoginTabs value={value} setValue={setValue} />
       {value === 0 && (
-        <LoginField form={loginForm} setForm={setLoginForm} setUser={setUser} />
+        <LoginField
+          form={loginForm}
+          setForm={setLoginForm}
+          setUser={(a) => {
+            setUser(a);
+            setOpen(false);
+          }}
+        />
       )}
       {value === 1 && (
         <SignUpField
@@ -116,9 +124,17 @@ const LoginTabs: React.FC<LoginTabsProps> = (props) => {
 
 const LoginField: React.FC<LoginFieldProps> = (props) => {
   const { form, setForm, setUser } = props;
-  const login = () => {
-    console.log(form);
-  };
+
+  const { login, loading, data, error } = useLoginQuery({
+    onCompleted: (r) => {
+      console.log(r);
+      console.log(r.login);
+      if (r && r.login) setUser(r.login);
+    },
+    name: form.username,
+    password: form.password,
+  });
+
   return (
     <Stack direction={"column"} spacing={2}>
       <FormField
@@ -132,6 +148,11 @@ const LoginField: React.FC<LoginFieldProps> = (props) => {
         setValue={(e) => setForm({ ...form, password: e })}
       />
       <Button onClick={() => login()}>Log In</Button>
+      {error && (
+        <Typography variant="body2">
+          Credentials not correct. New? Click sign up!
+        </Typography>
+      )}
     </Stack>
   );
 };

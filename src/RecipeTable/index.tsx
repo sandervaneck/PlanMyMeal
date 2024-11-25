@@ -58,12 +58,12 @@ const recipeToRecipeInput = (recipe: Recipe): RecipeInput => {
   };
 };
 
-export const RecipeTable = () => {
+export const RecipeTable = ({ userId }: { userId: string }) => {
   const [recipeIndex, setRecipeIndex] = useState<number | undefined>();
   const [recipeForms, setRecipeForms] = useState<RecipeInput[]>([]);
   const [allrecipes, setAllRecipes] = useState<RecipeInput[]>([]);
   const { data, loading } = useMyRecipesQuery({
-    accountId: "a6e07e45-cf7f-35f9-9dcb-eb3d81a17d4b",
+    accountId: userId,
     onCompleted: (result: MyRecipesResult) => {
       const mapped = result.myrecipes.map((myrep) =>
         recipeToRecipeInput(myrep)
